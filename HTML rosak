@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vulnerable App</title>
+</head>
+<body>
+
+<h1>Login Page</h1>
+
+<form onsubmit="login()">
+    Username: <input type="text" id="username"><br><br>
+    Password: <input type="password" id="password"><br><br>
+    <button type="submit">Login</button>
+</form>
+
+<h2>Search</h2>
+<input type="text" id="searchBox">
+<button onclick="search()">Search</button>
+
+<div id="output"></div>
+
+<script>
+// ❌ Hardcoded credentials (BAD)
+var correctUser = "admin";
+var correctPass = "123456";
+
+// ❌ Insecure login (no hashing, no backend)
+function login() {
+    event.preventDefault();
+
+    var user = document.getElementById("username").value;
+    var pass = document.getElementById("password").value;
+
+    if(user == correctUser && pass == correctPass){
+        alert("Login success");
+    } else {
+        alert("Login failed");
+    }
+}
+
+// ❌ DOM XSS vulnerability
+function search(){
+    var input = document.getElementById("searchBox").value;
+
+    // Directly inserting user input into HTML (VERY BAD)
+    document.getElementById("output").innerHTML = "Result: " + input;
+}
+
+// ❌ Insecure eval usage
+function runCode(userInput){
+    eval(userInput); // VERY dangerous
+}
+
+// ❌ Storing sensitive data in localStorage
+localStorage.setItem("password", "mypassword123");
+
+// ❌ Exposing sensitive info in console
+console.log("Admin password is 123456");
+
+// ❌ No input validation anywhere
+
+</script>
+
+</body>
+</html>
